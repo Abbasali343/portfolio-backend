@@ -250,6 +250,32 @@ exports.updateProfessionalInfo = async (req, res, next) => {
     next(error);
   }
 };
+exports.updateTestimonial = async (req, res, next) => {
+  try {
+    const { name, link } = req.body;
+    if (!name || !link) {
+      return res.status(404).json({ error: "Fill all fields carefully" });
+    }
+
+    Testimonial.findOne({ name: name }).then((testimonialExist) => {
+      if (!testimonialExist) {
+        return res.status(403).json({ error: "Testimonial does not Exist" });
+      }
+
+      Testimonial.findOneAndUpdate({ name: name }, { link: link })
+        .then(() => {
+          res
+            .status(201)
+            .json({ message: "Testimonial Info Updated Successfully" });
+        })
+        .catch((err) =>
+          res.status(500).json({ error: "Failed to Update Testimonial Info" })
+        );
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.allUsers = async (req, res, next) => {
   try {
