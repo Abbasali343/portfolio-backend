@@ -267,15 +267,30 @@ exports.allTestimonials = async (req, res, next) => {
     res.status(500).json({ message: "Data Not Found" });
   }
 };
-
-// exports.allmedia = async (req, res, next) => {
-//   try {
-//     const data = await Media.find();
-//     res.json(data);
-//   } catch (error) {
-//     res.status(500).json({ message: "Data Not Found" });
-//   }
-// };
+exports.allContacts = async (req, res, next) => {
+  try {
+    const data = await Contact.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
+exports.allEducations = async (req, res, next) => {
+  try {
+    const data = await Education.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
+exports.allPortfolios = async (req, res, next) => {
+  try {
+    const data = await Portfolio.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
 
 // exports.onemedia = async (req, res, next) => {
 //   try {

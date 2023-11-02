@@ -13,6 +13,9 @@ router.route('/updateUser').patch(controller.updatePersonalInfo);
 router.route('/updateProfession').patch(controller.updateProfessionalInfo);
 router.route('/allUsers').get(controller.allUsers);
 router.route('/allTestimonials').get(controller.allTestimonials);
+router.route('/allContacts').get(controller.allContacts);
+router.route('/allEducations').get(controller.allEducations);
+router.route('/allPortfolios').get(controller.allPortfolios);
 // router.route('/onemedia').get(controller.onemedia);
 // router.route('/deletemedia').delete(controller.deletemedia);
 
