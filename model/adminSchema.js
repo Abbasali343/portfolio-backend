@@ -31,8 +31,26 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  link: {
-    type: String
+  profilePicture: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  phoneNo: {
+    type: String,
+  },
+  education: {
+    type: Array,
+  },
+  experience: {
+    type: Array,
+  },
+  pfLinks: {
+    type: Array,
+  },
+  testimonials: {
+    type: Array,
   },
 });
 
