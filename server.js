@@ -12,11 +12,11 @@ const port = process.env.PORT;
 require("./db/conn");
 
 const Admin = require("./model/adminSchema");
-const Testimonial = require("./model/testimonialSchema");
-const Contact = require("./model/contactSchema");
-const Profession = require("./model/professionSchema");
-const Education = require("./model/educationSchema");
-const Portfolio = require("./model/portfolioSchema");
+// const Testimonial = require("./model/testimonialSchema");
+// const Contact = require("./model/contactSchema");
+// const Profession = require("./model/professionSchema");
+// const Education = require("./model/educationSchema");
+// const Portfolio = require("./model/portfolioSchema");
 // const Media = require("./model/mediaSchema");
 // const imageSchema = require("./model/imageSchema");
 

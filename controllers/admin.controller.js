@@ -307,6 +307,26 @@ exports.allUsers = async (req, res, next) => {
     res.status(500).json({ message: "Data Not Found" });
   }
 };
+exports.oneUsers = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(404).json({ error: "Enter a name" });
+    }
+
+    User.findOne({ name: name }).then((userExist) => {
+      if (!userExist) {
+        return res.status(403).json({ error: "User does not Exist" });
+      }else{
+        res.json(userExist);
+      }
+    });
+    
+    
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
 // exports.allTestimonials = async (req, res, next) => {
 //   try {
 //     const data = await Testimonial.find();

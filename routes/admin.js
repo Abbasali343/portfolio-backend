@@ -14,6 +14,7 @@ router.route("/updateUser").patch(controller.updatePersonalInfo);
 // router.route("/updateProfession").patch(controller.updateProfessionalInfo);
 // router.route("/updateTestimonial").patch(controller.updateTestimonial);
 router.route("/allUsers").get(controller.allUsers);
+router.route("/oneUsers").get(controller.oneUsers);
 // router.route("/allTestimonials").get(controller.allTestimonials);
 // router.route("/allContacts").get(controller.allContacts);
 // router.route("/allEducations").get(controller.allEducations);
