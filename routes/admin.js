@@ -10,7 +10,7 @@ router.route("/addProfession").post(controller.addProfessionalInfo);
 router.route("/addEducation").patch(controller.addEducationInfo);
 router.route("/addPortfolio").patch(controller.addPortfolioInfo);
 router.route("/updateUser").patch(controller.updatePersonalInfo);
-// router.route("/updateUser").patch(controller.updatePersonalInfo);
+router.route("/updateUser").patch(controller.updatePersonalInfo);
 // router.route("/updateProfession").patch(controller.updateProfessionalInfo);
 router.route("/updateTestimonial").patch(controller.updateTestimonial);
 router.route("/allUsers").get(controller.allUsers);
