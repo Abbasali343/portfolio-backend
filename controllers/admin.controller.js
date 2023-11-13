@@ -40,7 +40,7 @@ exports.addPersonalInfo = async (req, res, next) => {
         pfLinks: [],
         testimonials: [],
         education: [],
-        experience: [],
+        experienceData: [],
       });
 
       user
@@ -162,7 +162,6 @@ exports.addEducationInfo = async (req, res, next) => {
       }
       const requestedBody = {
         title: title,
-        type: type,
         company: company,
         description,
         description,
@@ -171,7 +170,7 @@ exports.addEducationInfo = async (req, res, next) => {
       if (type === "education") {
         department = { $push: { education: requestedBody } };
       } else {
-        department = { $push: { experience: requestedBody } };
+        department = { $push: { experienceData: requestedBody } };
       }
 
       User.findOneAndUpdate({ name: name }, department)
@@ -272,32 +271,38 @@ exports.updatePersonalInfo = async (req, res, next) => {
 //     next(error);
 //   }
 // };
-// exports.updateTestimonial = async (req, res, next) => {
-//   try {
-//     const { name, link } = req.body;
-//     if (!name || !link) {
-//       return res.status(404).json({ error: "Fill all fields carefully" });
-//     }
+exports.updateTestimonial = async (req, res, next) => {
+  try {
+    const { name, testimonialName, link } = req.body;
+    if (!name || !testimonialName || !link) {
+      return res.status(404).json({ error: "Fill all fields carefully" });
+    }
 
-//     Testimonial.findOne({ name: name }).then((testimonialExist) => {
-//       if (!testimonialExist) {
-//         return res.status(403).json({ error: "Testimonial does not Exist" });
-//       }
+    User.findOne({
+      name: name,
+      "testimonials.testimonialName": testimonialName,
+    }).then((testimonialExist) => {
+      if (!testimonialExist) {
+        return res.status(403).json({ error: "Testimonial does not Exist" });
+      }
 
-//       Testimonial.findOneAndUpdate({ name: name }, { link: link })
-//         .then(() => {
-//           res
-//             .status(201)
-//             .json({ message: "Testimonial Info Updated Successfully" });
-//         })
-//         .catch((err) =>
-//           res.status(500).json({ error: "Failed to Update Testimonial Info" })
-//         );
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+      User.findOneAndUpdate(
+        { name: name, "testimonials.testimonialName": testimonialName },
+        { $set: { "testimonials.$.link": link } }
+      )
+        .then(() => {
+          res
+            .status(201)
+            .json({ message: "Testimonial Info Updated Successfully" });
+        })
+        .catch((err) =>
+          res.status(500).json({ error: "Failed to Update Testimonial Info" })
+        );
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.allUsers = async (req, res, next) => {
   try {
@@ -307,22 +312,15 @@ exports.allUsers = async (req, res, next) => {
     res.status(500).json({ message: "Data Not Found" });
   }
 };
-exports.oneUsers = async (req, res, next) => {
+exports.oneUser = async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const { name } = req.query;
+    console.log(name);
     if (!name) {
-      return res.status(404).json({ error: "Enter a name" });
+      return res.status(404).json({ error: "Fill All Fields Carefully" });
     }
-
-    User.findOne({ name: name }).then((userExist) => {
-      if (!userExist) {
-        return res.status(403).json({ error: "User does not Exist" });
-      }else{
-        res.json(userExist);
-      }
-    });
-    
-    
+    const data = await User.findOne({ name: name });
+    res.json(data);
   } catch (error) {
     res.status(500).json({ message: "Data Not Found" });
   }
