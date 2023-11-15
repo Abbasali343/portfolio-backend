@@ -198,23 +198,33 @@ exports.addPortfolioInfo = async (req, res, next) => {
       if (!userExist) {
         return res.status(403).json({ error: "User does not Exist" });
       }
-      const requestedBody = {
-        field: field,
-        links: links,
-      };
 
-      User.findOneAndUpdate(
-        { name: name },
-        { $push: { pfLinks: requestedBody } }
-      )
-        .then(() => {
-          res
-            .status(201)
-            .json({ message: `PortFolio Info Added Successfully` });
-        })
-        .catch((err) =>
-          res.status(500).json({ error: `Failed to Add Portfolio  Info` })
-        );
+      User.findOne({
+        name: name,
+        "pfLinks.field": field,
+      }).then((FieldExist) => {
+        if (FieldExist) {
+          return res.status(403).json({ error: "Field is already Exist" });
+        }
+
+        const requestedBody = {
+          field: field,
+          links: links,
+        };
+
+        User.findOneAndUpdate(
+          { name: name },
+          { $push: { pfLinks: requestedBody } }
+        )
+          .then(() => {
+            res
+              .status(201)
+              .json({ message: `PortFolio Info Added Successfully` });
+          })
+          .catch((err) =>
+            res.status(500).json({ error: `Failed to Add Portfolio  Info` })
+          );
+      });
     });
   } catch (error) {
     next(error);
@@ -315,7 +325,6 @@ exports.allUsers = async (req, res, next) => {
 exports.oneUser = async (req, res, next) => {
   try {
     const { name } = req.query;
-    console.log(name);
     if (!name) {
       return res.status(404).json({ error: "Fill All Fields Carefully" });
     }
