@@ -52,6 +52,9 @@ const adminSchema = new mongoose.Schema({
   testimonials: {
     type: Array,
   },
+  professionsData: {
+    type: Array,
+  },
 });
 
 const admin = mongoose.model("ADMIN", adminSchema);

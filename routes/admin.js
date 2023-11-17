@@ -10,14 +10,22 @@ router.route("/addProfession").post(controller.addProfessionalInfo);
 router.route("/addEducation").patch(controller.addEducationInfo);
 router.route("/addPortfolio").patch(controller.addPortfolioInfo);
 router.route("/updateUser").patch(controller.updatePersonalInfo);
-router.route("/updateUser").patch(controller.updatePersonalInfo);
-// router.route("/updateProfession").patch(controller.updateProfessionalInfo);
+router.route("/updateProfession").patch(controller.updateProfession);
+router
+  .route("/updateAllProfessionalInfo")
+  .patch(controller.updateAllProfessionalInfo);
+router.route("/updateAllPersonalInfo").patch(controller.updateAllPersonalInfo);
+router
+  .route("/updateAllTestimonialInfo")
+  .patch(controller.updateAllTestimonialInfo);
+router
+  .route("/updateAllEducationInfo")
+  .patch(controller.updateAllEducationInfo);
+router
+  .route("/updateAllPortfolioInfo")
+  .patch(controller.updateAllPortfolioInfo);
 router.route("/updateTestimonial").patch(controller.updateTestimonial);
 router.route("/allUsers").get(controller.allUsers);
 router.route("/oneUser").get(controller.oneUser);
-// router.route("/allTestimonials").get(controller.allTestimonials);
-// router.route("/allContacts").get(controller.allContacts);
-// router.route("/allEducations").get(controller.allEducations);
-// router.route("/allPortfolios").get(controller.allPortfolios);
 
 module.exports = router;
