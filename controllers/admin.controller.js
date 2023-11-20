@@ -602,7 +602,7 @@ exports.oneUser = async (req, res, next) => {
 };
 exports.deleteUser = async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const { name } = req.query;
     if (!name) {
       return res.status(404).json({ error: "Fill All Fields Carefully" });
     }
