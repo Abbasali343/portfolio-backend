@@ -27,5 +27,9 @@ router
 router.route("/updateTestimonial").patch(controller.updateTestimonial);
 router.route("/allUsers").get(controller.allUsers);
 router.route("/oneUser").get(controller.oneUser);
-
+router.route("/deleteUser").delete(controller.deleteUser);
+router.route("/deleteProfession").delete(controller.deleteProfession);
+router.route("/deleteEducation").delete(controller.deleteEducation);
+router.route("/deleteTestimonial").delete(controller.deleteTestimonial);
+router.route("/deletePortfolio").delete(controller.deletePortfolio);
 module.exports = router;

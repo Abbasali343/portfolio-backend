@@ -517,8 +517,8 @@ exports.updateAllEducationInfo = async (req, res, next) => {
         };
       }
 
-      User.findOne(childCheck).then((testimonialExist) => {
-        if (!testimonialExist) {
+      User.findOne(childCheck).then((resumeExist) => {
+        if (!resumeExist) {
           return res.status(403).json({ error: `${type} does not Exist` });
         }
         User.findOneAndUpdate(filter, {
@@ -596,6 +596,163 @@ exports.oneUser = async (req, res, next) => {
     }
     const data = await User.findOne({ name: name });
     res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(404).json({ error: "Fill All Fields Carefully" });
+    }
+    User.findOne({ name: name }).then((userExist) => {
+      if (!userExist) {
+        return res
+          .status(403)
+          .json({ error: "User does not exist with this Name" });
+      }
+
+      User.findOneAndDelete({ name: name }).then(() => {
+        res.send(`User has been deleted..`);
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
+exports.deleteEducation = async (req, res, next) => {
+  try {
+    const { name, title, type } = req.body;
+
+    if (!name || !title || !type) {
+      return res.status(400).json({ error: "Fill All Fields Carefully" });
+    }
+
+    User.findOne({ name: name }).then((userExist) => {
+      if (!userExist) {
+        return res
+          .status(404)
+          .json({ error: "User does not exist with this Name" });
+      }
+
+      let filter;
+      let query;
+
+      if (type === "education") {
+        filter = { name: name, "education.title": title };
+        query = { $pull: { education: { title: title } } };
+      } else {
+        filter = { name: name, "experienceData.title": title };
+        query = { $pull: { experienceData: { title: title } } };
+      }
+
+      User.findOne(filter).then((resumeExist) => {
+        if (!resumeExist) {
+          return res.status(404).json({ error: `${type} does not Exist` });
+        }
+
+        User.findOneAndUpdate({ name: name }, query).then(() => {
+          res.send(`${type} has been deleted..`);
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+exports.deleteTestimonial = async (req, res, next) => {
+  try {
+    const { name, testimonialName } = req.body;
+    if (!name || !testimonialName) {
+      return res.status(404).json({ error: "Fill All Fields Carefully" });
+    }
+    User.findOne({ name: name }).then((userExist) => {
+      if (!userExist) {
+        return res
+          .status(403)
+          .json({ error: "User does not exist with this Name" });
+      }
+
+      User.findOne({
+        name: name,
+        "testimonials.testimonialName": testimonialName,
+      }).then((testimonialExist) => {
+        if (!testimonialExist) {
+          return res.status(403).json({ error: `Testimonial does not Exist` });
+        }
+        User.findOneAndUpdate(
+          { name: name },
+          { $pull: { testimonials: { testimonialName: testimonialName } } }
+        ).then(() => {
+          res.send(`Testimonial has been deleted..`);
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
+exports.deleteProfession = async (req, res, next) => {
+  try {
+    const { name, title } = req.body;
+    if (!name || !title) {
+      return res.status(404).json({ error: "Fill All Fields Carefully" });
+    }
+    User.findOne({ name: name }).then((userExist) => {
+      if (!userExist) {
+        return res
+          .status(403)
+          .json({ error: "User does not exist with this Name" });
+      }
+
+      User.findOne({
+        name: name,
+        "professionsData.title": title,
+      }).then((professionExist) => {
+        if (!professionExist) {
+          return res.status(403).json({ error: `Profession does not Exist` });
+        }
+        User.findOneAndUpdate(
+          { name: name },
+          { $pull: { professionsData: { title: title } } }
+        ).then(() => {
+          res.send(`Profession has been deleted..`);
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Data Not Found" });
+  }
+};
+exports.deletePortfolio = async (req, res, next) => {
+  try {
+    const { name, field } = req.body;
+    if (!name || !field) {
+      return res.status(404).json({ error: "Fill All Fields Carefully" });
+    }
+    User.findOne({ name: name }).then((userExist) => {
+      if (!userExist) {
+        return res
+          .status(403)
+          .json({ error: "User does not exist with this Name" });
+      }
+
+      User.findOne({
+        name: name,
+        "pfLinks.field": field,
+      }).then((pfExist) => {
+        if (!pfExist) {
+          return res.status(403).json({ error: `PortFolio does not Exist` });
+        }
+        User.findOneAndUpdate(
+          { name: name },
+          { $pull: { pfLinks: { field: field } } }
+        ).then(() => {
+          res.send(`Portfolio has been deleted..`);
+        });
+      });
+    });
   } catch (error) {
     res.status(500).json({ message: "Data Not Found" });
   }
